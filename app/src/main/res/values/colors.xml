@@ -8,4 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="green_500">#4CAF50</color>
+    <color name="yellow_800">#F9A825</color>
+    <color name="transparent">#00F57F17</color>
+    <color name="dpurp">#432344</color>
+    <color name="awesomeWhite">#E7EEFB</color>
+    <color name="coolYellow">#FFC03D</color>
+    <color name="dopeRed">#C51E1E</color>
 </resources>

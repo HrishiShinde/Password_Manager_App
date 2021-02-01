@@ -4,4 +4,9 @@
     <string name="Password">Password</string>
     <string name="login">Login</string>
     <string name="signupNow">New here? Signup now!</string>
+    <string name="signup">SignUp</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="email">Email</string>
+    <string name="register">Register</string>
+    <string name="already_registered_log_in">Already registered? Log in!</string>
 </resources>

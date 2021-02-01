@@ -80,9 +80,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsmedium"
             android:textColor="@color/dpurp"
-            android:gravity="top"
-            android:lineSpacingExtra="10dp"
-            android:textCursorDrawable="@drawable/ic_custom_cursor"
             >
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -100,8 +97,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Password"
-        tools:targetApi="lollipop" />
+        app:layout_constraintTop_toBottomOf="@+id/Password" />
 
     <TextView
         android:id="@+id/signUpTV"
