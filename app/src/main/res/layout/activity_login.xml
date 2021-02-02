@@ -82,7 +82,7 @@
             android:textColor="@color/dpurp"
             android:gravity="top"
             android:lineSpacingExtra="10dp"
-            android:textCursorDrawable="@drawable/ic_custom_cursor"
+            android:textCursorDrawable="@drawable/ic_progress"
             >
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -110,12 +110,32 @@
         android:layout_marginTop="36dp"
         android:fontFamily="@font/poppinsmedium"
         android:gravity="center"
-        android:onClick="gotosign"
         android:textColor="@color/dpurp"
         android:text="@string/signupNow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Login" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpTV">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:indicatorColor="@color/dopeRed"
+            tools:layout_editor_absoluteX="178dp"
+            tools:layout_editor_absoluteY="141dp"/>
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

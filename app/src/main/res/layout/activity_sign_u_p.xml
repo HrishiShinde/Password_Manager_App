@@ -18,35 +18,39 @@
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/Username"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.451" />
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/Username"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="216dp"
         android:layout_marginRight="30dp"
         android:hint="@string/Username"
+        android:textColorHint="@color/dpurp"
+        app:boxBackgroundMode="outline"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
         app:boxStrokeColor="@color/coolYellow"
         app:boxStrokeErrorColor="@color/dopeRed"
-        android:textColorHint="@color/dpurp"
         app:hintTextColor="@color/dpurp"
-        app:boxBackgroundMode="outline"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        app:boxCornerRadiusTopStart="12dp"
-        app:boxCornerRadiusBottomEnd="12dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_user"
-            android:textColor="@color/dpurp"
-            android:fontFamily="@font/poppinsmedium">
+            android:fontFamily="@font/poppinsmedium"
+            android:textColor="@color/dpurp">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
@@ -72,11 +76,12 @@
         app:layout_constraintTop_toBottomOf="@+id/Username">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_email"
-            android:textColor="@color/dpurp"
-            android:fontFamily="@font/poppinsmedium">
+            android:fontFamily="@font/poppinsmedium"
+            android:textColor="@color/dpurp">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
@@ -105,11 +110,12 @@
         app:layout_constraintTop_toBottomOf="@+id/Email">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/pass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_pass"
-            android:textColor="@color/dpurp"
-            android:fontFamily="@font/poppinsmedium">
+            android:fontFamily="@font/poppinsmedium"
+            android:textColor="@color/dpurp">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
@@ -139,6 +145,7 @@
         app:layout_constraintTop_toBottomOf="@+id/Pass">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/confpass"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsmedium"
@@ -175,5 +182,28 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regBut" />
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/Username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleTV">
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:indicatorColor="@color/dopeRed"
+            tools:layout_editor_absoluteX="178dp"
+            tools:layout_editor_absoluteY="141dp"/>
+
+
+    </RelativeLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
