@@ -42,6 +42,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/poop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawableEnd="@drawable/ic_user"
@@ -76,13 +77,11 @@
         app:layout_constraintTop_toBottomOf="@+id/userName">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/asdf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppinsmedium"
             android:textColor="@color/dpurp"
-            android:gravity="top"
-            android:lineSpacingExtra="10dp"
-            android:textCursorDrawable="@drawable/ic_progress"
             >
 
         </com.google.android.material.textfield.TextInputEditText>
@@ -107,35 +106,29 @@
         android:id="@+id/signUpTV"
         android:layout_width="188dp"
         android:layout_height="22dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="56dp"
         android:fontFamily="@font/poppinsmedium"
         android:gravity="center"
-        android:textColor="@color/dpurp"
         android:text="@string/signupNow"
+        android:textColor="@color/dpurp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Login" />
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress"
+        android:layout_width="222dp"
+        android:layout_height="509dp"
+        android:layout_marginTop="36dp"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        app:indicatorColor="@color/dopeRed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpTV">
-
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:indicatorColor="@color/dopeRed"
-            tools:layout_editor_absoluteX="178dp"
-            tools:layout_editor_absoluteY="141dp"/>
-
-    </RelativeLayout>
-
+        app:layout_constraintTop_toBottomOf="@+id/signUpTV" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

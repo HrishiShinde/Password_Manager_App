@@ -9,4 +9,6 @@
     <string name="email">Email</string>
     <string name="register">Register</string>
     <string name="already_registered_log_in">Already registered? Log in!</string>
+    <string name="welcome_user">Welcome User!</string>
+    <string name="logout">Logout</string>
 </resources>

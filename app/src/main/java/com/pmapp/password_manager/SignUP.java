@@ -48,7 +48,7 @@ public class SignUP extends AppCompatActivity {
         ipSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("info", " in onClick now!");
+                //Log.i("info", " in onClick now!");
                 String email = ipEmail.getText().toString().trim();
                 String pass = ipPassword.getText().toString().trim();
                 String cpass = ipConfpass.getText().toString().trim();
