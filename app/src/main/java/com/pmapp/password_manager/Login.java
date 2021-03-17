@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
                     return;
                 }
 
-                //ipProgress.setVisibility(View.VISIBLE);
+                ipProgress.setVisibility(View.VISIBLE);
 
                 auth.signInWithEmailAndPassword(uname, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override

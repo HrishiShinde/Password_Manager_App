@@ -11,4 +11,5 @@
     <string name="already_registered_log_in">Already registered? Log in!</string>
     <string name="welcome_user">Welcome User!</string>
     <string name="logout">Logout</string>
+    <string name="name">Name</string>
 </resources>
