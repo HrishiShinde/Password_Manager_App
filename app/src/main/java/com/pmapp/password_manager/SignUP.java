@@ -30,10 +30,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
-public class SignUP extends AppCompatActivity {
+public class SignUP extends AppCompatActivity{
 
     TextInputEditText ipUsername, ipEmail, ipPassword, ipName;
     Button ipSignup;
@@ -115,18 +118,18 @@ public class SignUP extends AppCompatActivity {
                                 }
                             }
                             else{
-                                auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<AuthResult> task) {
-                                        //Log.i("info", " in onComplete now!");
-                                        if(task.isSuccessful()) {
-                                            //Log.i("info", " in isSuccessful now!");
-                                            UserHelper uh = new UserHelper(name,username,email,password);
-                                            dbRef.child(username).setValue(uh);
-                                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                        }
-                                    }
-                                });
+                                try {
+                                    String hashPass = secret.sha512Hasher(password,username);
+                                    Log.i("pass", "onDataChange: Hashedpass= "+hashPass);
+                                    UserHelper uh = new UserHelper(name,username,email,hashPass);
+                                    dbRef.child(username).setValue(uh);
+                                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                    intent.putExtra("name",name);
+                                    startActivity(intent);
+                                } catch (NoSuchAlgorithmException e) {
+                                    e.printStackTrace();
+                                }
+                                //ipProgress.setVisibility(View.GONE);
                             }
                         }
 
