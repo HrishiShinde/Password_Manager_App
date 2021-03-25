@@ -1,5 +1,6 @@
 package com.pmapp.password_manager;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -17,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     Button logout;
     FirebaseAuth auth;
     TextView welmsg;
+    FloatingActionButton addFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         welmsg = findViewById(R.id.welTv);
         logout = findViewById(R.id.Logout);
+        addFab = findViewById(R.id.add_fab);
         auth = FirebaseAuth.getInstance();
 
         Intent intent = getIntent();
@@ -42,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
                 auth.signOut();
                 startActivity(new Intent(getApplicationContext(), Login.class));
                 finish();
+            }
+        });
+
+        addFab.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), addPass.class));
             }
         });
     }

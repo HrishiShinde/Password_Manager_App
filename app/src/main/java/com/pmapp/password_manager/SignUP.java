@@ -126,6 +126,7 @@ public class SignUP extends AppCompatActivity{
                                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                     intent.putExtra("name",name);
                                     startActivity(intent);
+                                    finish();
                                 } catch (NoSuchAlgorithmException e) {
                                     e.printStackTrace();
                                 }

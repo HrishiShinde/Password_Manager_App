@@ -102,7 +102,7 @@ public class Login extends AppCompatActivity {
 
                             try {
                                 String hashPass = secret.sha512Hasher(pass,uname);
-                                Log.i("pass", "onDataChange: "+passFromDb+"===="+hashPass);jects
+                                Log.i("pass", "onDataChange: "+passFromDb+"===="+hashPass);
                                 if(passFromDb.equals(hashPass)){
                                     String name = "";
                                     String nameFromDb = snapshot.child(uname).child("name").getValue(String.class);
@@ -110,6 +110,7 @@ public class Login extends AppCompatActivity {
                                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                     intent.putExtra("name",nameFromDb);
                                     startActivity(intent);
+                                    finish();
                                 }
                                 else{
                                     ipPass.setError("Incorrect Password!");

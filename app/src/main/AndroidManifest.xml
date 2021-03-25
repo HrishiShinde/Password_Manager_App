@@ -9,9 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Password_Manager">
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".SignUP" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-        <activity android:name=".Login" android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+        <activity android:name=".addPass"></activity>
+        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".SignUP"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity
+            android:name=".Login"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
