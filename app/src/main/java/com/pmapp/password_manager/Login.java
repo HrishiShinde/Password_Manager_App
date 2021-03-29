@@ -109,6 +109,7 @@ public class Login extends AppCompatActivity {
                                     Log.i("name", "onDataChange: name= " + nameFromDb);
                                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                     intent.putExtra("name",nameFromDb);
+                                    intent.putExtra("uname",uname);
                                     startActivity(intent);
                                     finish();
                                 }

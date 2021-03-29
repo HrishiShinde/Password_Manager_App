@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
+    public String receivedName, receivedUname;
+
     Button logout;
     FirebaseAuth auth;
     TextView welmsg;
@@ -47,20 +49,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         auth = FirebaseAuth.getInstance();
 
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.start, R.string.close);
-
-
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         navigationView.setNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
 
-        String receivedText = intent.getStringExtra("name");
-        Log.i("name", "name= " + receivedText);
-        welmsg.setText("Hello, Welcome "+receivedText+"!");
+        receivedName = intent.getStringExtra("name");
+        receivedUname = intent.getStringExtra("uname");
+        Log.i("name", "name= " + receivedName);
+        welmsg.setText("Hello, Welcome "+receivedName+"!");
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +99,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.icProfile:
                 Toast.makeText(this, "redirecting to Profile Activty!", Toast.LENGTH_SHORT).show();
                 Log.i("profile", "onNavigationItemSelected: Profile screen opening");
-                startActivity(new Intent(getApplicationContext(), profile.class));
+                Intent intent = new Intent(getApplicationContext(),profile.class);
+                intent.putExtra("name",receivedName);
+                intent.putExtra("uname",receivedUname);
+                startActivity(intent);
                 break;
             case R.id.icLogout:
                 Toast.makeText(this, "Logout Activty!", Toast.LENGTH_SHORT).show();

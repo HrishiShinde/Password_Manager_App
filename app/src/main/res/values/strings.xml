@@ -38,4 +38,5 @@
     <string name="test">Test</string>
     <string name="set_text">Set text</string>
     <string name="update">Update</string>
+    <string name="hash_tester">Hash Tester</string>
 </resources>

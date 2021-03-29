@@ -76,6 +76,7 @@
                 android:background="@color/transparent"
                 android:drawableLeft="@drawable/ic_user"
                 android:drawablePadding="10dp"
+                android:text="@string/hash_tester"
                 android:enabled="false"
                 android:fontFamily="@font/poppinsmedium"
                 android:textColor="@color/dpurp">
@@ -174,6 +175,15 @@
             app:layout_constraintTop_toBottomOf="@+id/Password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/navigation_view"
+        app:menu="@menu/navigation_drawer"
+
+        app:itemTextAppearance="@android:attr/textAppearanceMedium"
+        android:layout_gravity="start"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
 
