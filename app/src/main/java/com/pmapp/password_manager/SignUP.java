@@ -63,11 +63,6 @@ public class SignUP extends AppCompatActivity{
         fDatabase = FirebaseDatabase.getInstance();
         dbRef = fDatabase.getReference("users");
 
-        if (auth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            finish();
-        }
-
         ipSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

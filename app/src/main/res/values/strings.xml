@@ -39,4 +39,8 @@
     <string name="set_text">Set text</string>
     <string name="update">Update</string>
     <string name="hash_tester">Hash Tester</string>
+    <string name="change_password">Change Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="change">Change</string>
 </resources>

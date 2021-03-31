@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/awesomeWhite"
         tools:context=".profile">
 
         <TextView
@@ -32,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            app:cardBackgroundColor="@color/awesomeWhite"
             app:layout_constraintTop_toBottomOf="@+id/titleTV"
             tools:layout_editor_absoluteX="0dp">
 
@@ -52,7 +54,6 @@
                 android:gravity="center"
                 android:text="0"
                 android:textSize="20sp" />
-
 
         </androidx.cardview.widget.CardView>
 
@@ -86,7 +87,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/Email"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,7 +114,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/Username"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/Username"
@@ -137,42 +138,27 @@
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/Password"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/Password"
-            android:textColorHint="@color/dpurp"
-            app:boxStrokeColor="@color/coolYellow"
-            app:boxStrokeErrorColor="@color/dopeRed"
-            app:hintTextColor="@color/dpurp"
-            app:layout_constraintTop_toBottomOf="@+id/Username">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:drawableLeft="@drawable/ic_pass"
-                android:drawablePadding="10dp"
-                android:enabled="false"
-                android:fontFamily="@font/poppinsmedium"
-                android:textColor="@color/dpurp">
-
-            </com.google.android.material.textfield.TextInputEditText>
-        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/setText"
+            android:id="@+id/update"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="50dp"
             android:text="@string/update"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Password" />
+            app:layout_constraintTop_toBottomOf="@+id/Username" />
+
+        <Button
+            android:id="@+id/changPass"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/change_password"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/update" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -181,7 +167,6 @@
         android:layout_height="match_parent"
         android:id="@+id/navigation_view"
         app:menu="@menu/navigation_drawer"
-
         app:itemTextAppearance="@android:attr/textAppearanceMedium"
         android:layout_gravity="start"/>
 

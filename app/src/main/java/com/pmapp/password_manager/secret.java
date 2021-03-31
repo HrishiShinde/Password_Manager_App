@@ -1,11 +1,23 @@
 package com.pmapp.password_manager;
 
+import android.util.Base64;
+import android.util.Log;
+
+import com.scottyab.aescrypt.AESCrypt;
+
+import java.security.GeneralSecurityException;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+
 public class secret {
-    public static String sha512Hasher(String password, String uname)throws NoSuchAlgorithmException{
+    public static String sha512Hasher(String password, String uname) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("SHA-512");
         md.reset();
@@ -25,29 +37,26 @@ public class secret {
 
     public static byte[] gensalt(String uname) throws NoSuchAlgorithmException {
 
-        /*SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);*/
         byte[] unameBytes = uname.getBytes();
         System.out.println("straight string hash: " + unameBytes);
         byte[] revStr = new byte[unameBytes.length];
-        for (int i = 0; i<unameBytes.length ; i++){
+        for (int i = 0; i < unameBytes.length; i++) {
             revStr[i] = unameBytes[unameBytes.length - i - 1];
             //System.out.println("sssalt: " + revStr);
         }
         System.out.println("name rev: " + new String(revStr) + ", revUnameHash: " + revStr);
         byte[] salt = new String(revStr).getBytes();
-        System.out.println("salt: " + new String(revStr).getBytes() + ", "+salt);
+        System.out.println("salt: " + new String(revStr).getBytes() + ", " + salt);
         return salt;
     }
 
-    public static String genpass(int length){
+    public static String genpass(int length) {
 
         String charec = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*?";
         char temp;
         String tempe, genp = "";
         Random random = new Random();
-        for(int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             temp = charec.charAt(random.nextInt(charec.length()));
             tempe = Character.toString(temp);
             genp = genp + tempe;
@@ -55,4 +64,78 @@ public class secret {
         }
         return genp;
     }
+
+    private static final String ALGO = "AES";
+
+    private byte[] keyValue;
+
+    public secret(String key) {
+        keyValue = key.getBytes();
+    }
+
+    public Key generateKey() throws Exception {
+        Key key = new SecretKeySpec(keyValue, ALGO);
+        return key;
+    }
+    /*
+    public byte[] encrypt(String messg) throws Exception {
+        Log.i("testpass", "(secret)encrypt: in encryt func");
+        Key key = generateKey();
+        Log.i("testpass", "(secret)encrypt: key= "+key);
+        Cipher cipher = Cipher.getInstance(ALGO);
+        Log.i("testpass", "(secret)encrypt: Key length= "+ key.getEncoded().length);
+        SecretKeySpec keySpec = new SecretKeySpec(key.getEncoded(), ALGO);
+        //IvParameterSpec ivSpec = new IvParameterSpec(IV);
+        cipher.init(cipher.ENCRYPT_MODE, keySpec);
+        Log.i("testpass", "(secret)encrypt: cipher= "+cipher);
+        byte[] raw = cipher.doFinal(messg.getBytes());
+        //Base64 encode=new Base64();
+        Log.i("testpass", "(secret)encrypt: raw= "+raw);
+        //String encText = Base64.encodeToString(raw, Base64.NO_WRAP));
+        //String encText = new String(raw, "ISO-8859-1");
+        Log.i("testpass", "(secret)encrypt: encText= "+raw);
+        return raw;
+        // 55c75be8e1ea4186bf296c180f22d17cc52f8ff6fad75a16131af2b6cca7ce6c7a8f5025f3af3baa979bae1106cf62b0ca4769dbb8b52ad1df533c2fcb5580ad
+    }*/
+
+    public static String encrypt(String msg, String key){
+        Log.i("testpass", "(secret)encrypt: in encryt func");
+        Log.i("testpass", "(secret)encrypt: key= "+key);
+        try {
+            Log.i("testpass", "(secret)encrypt: in Try");
+            String encText = AESCrypt.encrypt(key, msg);
+            Log.i("testpass", "(secret)encrypt: encText= "+encText);
+            return encText;
+        } catch (GeneralSecurityException e) {
+            Log.i("testpass", "(secret)encrypt: Exception: "+e.toString());
+        }
+        return null;
+    }
+
+    public static String decrypt(String msg, String key){
+        Log.i("testpass", "(secret)decrypt: in decrypt func");
+        Log.i("testpass", "(secret)decrypt: key= "+key);
+        try {
+            Log.i("testpass", "(secret)decrypt: in Try");
+            String decText = AESCrypt.decrypt(key, msg);
+            Log.i("testpass", "(secret)decrypt: decText= "+decText);
+            return decText;
+        } catch (GeneralSecurityException e) {
+            Log.i("testpass", "(secret)decrypt: Exception: "+e.toString());
+        }
+        return null;
+    }
+
+    /*
+    public String decrypt(byte[] encrypted) throws Exception {
+        Key key = generateKey();
+        Cipher cipher = Cipher.getInstance(ALGO);
+        SecretKeySpec keySpec = new SecretKeySpec(key.getEncoded(), ALGO);
+        cipher.init(cipher.DECRYPT_MODE, keySpec);
+        //BASE64Decoder decode=new BASE64Decoder();
+        //byte[] raw = Base64.decode(encrypted, Base64.NO_WRAP);
+        byte[] stringBytes = cipher.doFinal(encrypted);
+        String decText = new String(stringBytes, "UTF8");
+        return decText;
+    }*/
 }

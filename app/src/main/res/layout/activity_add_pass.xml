@@ -10,6 +10,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/awesomeWhite"
         tools:context=".addPass">
 
         <TextView
@@ -48,11 +49,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/poop"
+                android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_user_2"
                 android:textColor="@color/dpurp"
+                android:maxLength="12"
                 android:fontFamily="@font/poppinsmedium">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -74,18 +76,19 @@
             app:boxBackgroundMode="outline"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:endIconMode="password_toggle"
-            app:boxCornerRadiusTopStart="12dp"
-            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusTopStart="20dp"
+            app:boxCornerRadiusBottomEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Name">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/asdf"
+                android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppinsmedium"
                 android:textColor="@color/dpurp"
+                android:maxLength="12"
                 >
 
             </com.google.android.material.textfield.TextInputEditText>

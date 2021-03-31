@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,7 +31,7 @@ public class profile extends AppCompatActivity implements NavigationView.OnNavig
     private NavigationView navigationView;
 
     TextInputEditText ipUsername, ipEmail, ipPassword, ipName;
-    Button ipSet;
+    Button ipUpdate, ipChang;
     FirebaseDatabase fDatabase;
     DatabaseReference dbRef;
     @Override
@@ -42,8 +43,9 @@ public class profile extends AppCompatActivity implements NavigationView.OnNavig
         ipName = findViewById(R.id.name);
         ipEmail = findViewById(R.id.email);
         ipUsername = findViewById(R.id.username);
-        ipPassword = findViewById(R.id.password);
-        ipSet = findViewById(R.id.setText);
+        //ipPassword = findViewById(R.id.password);
+        ipUpdate = findViewById(R.id.update);
+        ipChang = findViewById(R.id.changPass);
         fDatabase = FirebaseDatabase.getInstance();
         dbRef = fDatabase.getReference("users");
 
@@ -68,24 +70,33 @@ public class profile extends AppCompatActivity implements NavigationView.OnNavig
                     ipName.setText(snapshot.child(unameFromMA).child("name").getValue(String.class));
                     ipEmail.setText(snapshot.child(unameFromMA).child("email").getValue(String.class));
                     ipUsername.setText(snapshot.child(unameFromMA).child("username").getValue(String.class));
-                    ipPassword.setText(snapshot.child("password").getValue(String.class));
+                    //ipPassword.setText(snapshot.child("password").getValue(String.class));
                 }
             }
-            //child("username").getValue().equals(unameFromMA)
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
 
-
-        ipSet.setOnClickListener(new View.OnClickListener() {
+        ipUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ipUsername.setText("hasherOP");
-                ipPassword.setText("12312312");
+                //ipUsername.setText("hasherOP");
                 ipUsername.setEnabled(false);
-                ipPassword.setEnabled(false);
+                ipName.setEnabled(false);
+                ipEmail.setEnabled(false);
+
+                String uname = ipUsername.getText().toString().trim();
+                String name = ipName.getText().toString().trim();
+                String email = ipEmail.getText().toString().trim();
+            }
+        });
+        ipChang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), changePass.class);
+                intent.putExtra("name",unameFromMA);
+                startActivity(intent);
             }
         });
     }

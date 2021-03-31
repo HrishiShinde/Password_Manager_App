@@ -11,6 +11,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +19,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class addPass extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,9 +35,14 @@ public class addPass extends AppCompatActivity implements NavigationView.OnNavig
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
-    TextInputLayout ipName, ipPass;
+    public String passFromDb;
+
+    TextInputEditText ipName, ipPass;
     TextView genPass;
     Button addPass;
+
+    FirebaseDatabase fDatabase;
+    DatabaseReference dbRefUsers, dbRefPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +50,28 @@ public class addPass extends AppCompatActivity implements NavigationView.OnNavig
         setContentView(R.layout.activity_add_pass);
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation_view);
-        ipName = findViewById(R.id.Name);
-        ipPass = findViewById(R.id.Password);
+        ipName = findViewById(R.id.name);
+        ipPass = findViewById(R.id.password);
         genPass=findViewById(R.id.genPass);
         addPass=findViewById(R.id.addPassBtn);
+        fDatabase = FirebaseDatabase.getInstance();
+        //dbRefUsers = fDatabase.getInstance().getReference();
+        dbRefPass = fDatabase.getReference("passwords");
 
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.start, R.string.close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+
+        Intent intent = getIntent();
+        String unameFromMA = intent.getStringExtra("uname");
+        String passFromMA = intent.getStringExtra("password");
+        String reducedPass = "";
+        Log.i("testpass", "(addPass)onCreate: "+unameFromMA+"-----"+passFromMA);
+        for (int i = 0; i < 8; i++ ){
+            reducedPass += passFromMA.charAt(i);
+        }
+        Log.i("testpass", "(addPass)onCreate: "+unameFromMA+"-----"+reducedPass);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationView.setNavigationItemSelectedListener(this);
@@ -59,11 +87,44 @@ public class addPass extends AppCompatActivity implements NavigationView.OnNavig
                 Toast.makeText(addPass.this, "Password Copied to Clipboard!", Toast.LENGTH_SHORT).show();
             }
         });
-        
+
+        String finalReducedPass = reducedPass;
         addPass.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                finish();
+                String sitename = ipName.getText().toString().trim();
+                String sitepass = ipPass.getText().toString().trim();
+
+                Log.i("testpass", "(addPass)onClick: pass= "+passFromMA);
+                //secret sec = new secret(finalReducedPass);
+                Log.i("testpass", "(addPass)onClick: before Try");
+                try {
+                    Log.i("testpass", "(addPass)onClick: in Try");
+                    //String siteName = "test1174";
+                    Log.i("testpass", "(addPass)onClick: before enc sitename= "+sitename+"---- sitepass= "+sitepass);
+                    Log.i("testpass", "(addPass)onClick: before enc");
+
+                    String encPass = secret.encrypt(sitepass, finalReducedPass);
+
+                    //String pass = new String(passwords).replace("[",",");
+                    //pass = pass.replace("@",":");
+
+                    Log.i("testpass", "(addPass)onClick: encPass= "+encPass);
+                    Log.i("testpass", "(addPass)onClick: decPass= "+secret.decrypt(encPass, finalReducedPass));
+
+                    PassHelper ph = new PassHelper(sitename, encPass);
+                    dbRefPass.child(unameFromMA).child(sitename).setValue(ph);
+
+                    Log.i("testpass", "(addPass)onClick: Stored!, now redirecting....");
+
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    //intent.putExtra("name",name);
+                    Toast.makeText(addPass.this, "Password saved!", Toast.LENGTH_SHORT).show();
+                    finish();
+
+                } catch (Exception e) {
+                    Log.i("testpass", "(addPass)onClick: Exception: "+e.toString());
+                }
             }
         });
     }
