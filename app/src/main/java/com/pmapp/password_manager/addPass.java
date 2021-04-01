@@ -42,7 +42,7 @@ public class addPass extends AppCompatActivity implements NavigationView.OnNavig
     Button addPass;
 
     FirebaseDatabase fDatabase;
-    DatabaseReference dbRefUsers, dbRefPass;
+    DatabaseReference dbRefPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,6 +148,7 @@ public class addPass extends AppCompatActivity implements NavigationView.OnNavig
             case R.id.icProfile:
                 Toast.makeText(this, "Redirecting to Profile Activty!", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getApplicationContext(), profile.class));
+                finish();
                 break;
             case R.id.icLogout:
                 Toast.makeText(this, "Logout!", Toast.LENGTH_SHORT).show();

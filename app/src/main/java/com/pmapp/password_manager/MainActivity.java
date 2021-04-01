@@ -137,12 +137,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         if (snapshot.exists()) {
                             Log.i("testpass", "(Main)onDataChange: exists bypassed!");
                             passFromDb = snapshot.child(receivedUname).child("password").getValue(String.class);
-                            Log.i("testpass", "(Main)onClick:-------- pass= "+passFromDb);
+                            Log.i("testpass", "(Main)onClick:-------- pass= " + passFromDb);
                             intent.putExtra("uname", receivedUname);
                             intent.putExtra("password", passFromDb);
                             startActivity(intent);
-                        }
-                        else {
                         }
                     }
                     @Override
