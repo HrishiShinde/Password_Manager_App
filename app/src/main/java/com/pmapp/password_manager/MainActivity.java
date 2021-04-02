@@ -5,6 +5,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -27,6 +29,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
@@ -39,8 +45,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseAuth auth;
     TextView welmsg;
     FloatingActionButton addFab;
+
+    RecyclerView recycler;
+    List<String> titles, passName, passPass;
+    Adapter adapter;
+
     FirebaseDatabase fDatabase;
-    DatabaseReference dbRef;
+    DatabaseReference dbRef, dbRefPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         welmsg = findViewById(R.id.welTv);
         logout = findViewById(R.id.Logout);
         addFab = findViewById(R.id.add_fab);
+
+        recycler = findViewById(R.id.recyclerView);
+        titles = new ArrayList<>();
+
         auth = FirebaseAuth.getInstance();
         fDatabase = FirebaseDatabase.getInstance();
         dbRef = fDatabase.getReference("users");
@@ -66,12 +81,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Intent intent = getIntent();
 
+        titles.add("Hrishii");
+        titles.add("Too OP Hrishi");
+        titles.add("Even more OP Hrishii");
+        titles.add("OPest Hrishi");
+        titles.add("Hrishii");
+        titles.add("Too OP Hrishi");
+        titles.add("Even more OP Hrishii");
+        titles.add("OPest Hrishi");
+
+        Intent intent = getIntent();
         receivedName = intent.getStringExtra("name");
         receivedUname = intent.getStringExtra("uname");
         Log.i("name", "name= " + receivedName);
         welmsg.setText("Hello, Welcome "+receivedName+"!");
+
+        dbRefPass = fDatabase.getReference("passwords").child(receivedUname);
+        Query passQuery = dbRefPass.orderByChild("username");
+        passQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    int passCount = (int) snapshot.child("").getChildrenCount();
+                    String lol = snapshot.toString();
+                    HashMap<String, HashMap<String, String>> val = (HashMap<String, HashMap<String, String>>) snapshot.getValue();
+                    passName = new ArrayList<String>();
+                    passPass = new ArrayList<String>();
+                    for (HashMap<String, String> i : val.values()) {
+                        HashMap<String, String> data = i;
+                        passName.add(data.get("name"));
+                        passPass.add(data.get("password"));
+                        Log.i("testpassc", "onDataChange: Data=> " + i + ",------->" + data.get("name"));
+                    }
+                    Log.i("testpassc", "onDataChange: pass= "+passCount+"------"+lol+"  "+receivedUname+"------"+passName+"=="+passPass);
+                    adapter = new Adapter(getApplicationContext(), passName);
+                    adapter.setPassPass(passPass);
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
+                    recycler.setLayoutManager(gridLayoutManager);
+                    recycler.setAdapter(adapter);
+                    //passCountTV.setText(Integer.toString(passCount));
+                }
+                else{
+                    Log.i("testpassc", "onDataChange: pass = losssssssss");
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,6 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.icLogout:
                 Toast.makeText(this, "Logout Activty!", Toast.LENGTH_SHORT).show();
+                auth.signOut();
                 startActivity(new Intent(getApplicationContext(), Login.class));
                 finish();
                 break;

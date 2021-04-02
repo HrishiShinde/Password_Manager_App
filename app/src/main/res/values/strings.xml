@@ -43,4 +43,6 @@
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
     <string name="change">Change</string>
+    <string name="delete">Delete</string>
+    <string name="copy">Copy</string>
 </resources>
