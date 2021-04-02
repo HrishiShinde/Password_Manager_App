@@ -15,6 +15,7 @@ import java.util.List;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
+    String uname;
     List<String> passName, passPass;
     LayoutInflater inflater;
     Context ctxx;
@@ -23,6 +24,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         this.passName = passName;
         this.inflater = LayoutInflater.from(ctx);
         ctxx = ctx;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
     }
 
     public List<String> getPassPass() {
@@ -66,6 +75,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.putExtra("name",passName.get(pos));
                     intent.putExtra("pass",passPass.get(pos));
+                    intent.putExtra("uname",getUname());
                     ctxx.startActivity(intent);
                     Toast.makeText(v.getContext(), "password= "+ passPass.get(pos), Toast.LENGTH_SHORT).show();
                 }

@@ -3,6 +3,14 @@ package com.pmapp.password_manager;
 import android.util.Base64;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.scottyab.aescrypt.AESCrypt;
 
 import java.security.GeneralSecurityException;
@@ -16,7 +24,9 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 
+
 public class secret {
+    public static String reducedPass;
     public static String sha512Hasher(String password, String uname) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -48,6 +58,34 @@ public class secret {
         byte[] salt = new String(revStr).getBytes();
         System.out.println("salt: " + new String(revStr).getBytes() + ", " + salt);
         return salt;
+    }
+
+    public static String genKey(String uname) {
+        FirebaseDatabase fDatabase;
+        DatabaseReference dbRef;
+        fDatabase = FirebaseDatabase.getInstance();
+        dbRef = fDatabase.getReference("users");
+
+        Query checkUser = dbRef.orderByChild("username").equalTo(uname);
+        Log.i("testpass", "(Main)onClick: before event listener");
+        checkUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String passFromDb = snapshot.child(uname).child("password").getValue(String.class);
+                    //Log.i("testpass", "(Main)onClick:-------- pass= "+passFromDb);
+                    for (int i = 0; i < 8; i++ ){
+                        reducedPass += passFromDb.charAt(i);
+                        //return reducedPass;
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return reducedPass;
     }
 
     public static String genpass(int length) {

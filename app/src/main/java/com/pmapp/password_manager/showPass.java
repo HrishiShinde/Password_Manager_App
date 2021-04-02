@@ -2,14 +2,21 @@ package com.pmapp.password_manager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 
 public class showPass extends AppCompatActivity {
 
     TextInputEditText ipName, ipPassword;
+    Button upButt, copyButt, delButt, chgButt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,13 +24,51 @@ public class showPass extends AppCompatActivity {
 
         ipName = findViewById(R.id.name);
         ipPassword = findViewById(R.id.password);
+        upButt = findViewById(R.id.upButt);
+        copyButt = findViewById(R.id.copyButt);
+        chgButt = findViewById(R.id.chgButt);
+        delButt = findViewById(R.id.delButt);
 
         Intent intent = getIntent();
         String nameFromMA = intent.getStringExtra("name");
         String passFromMA = intent.getStringExtra("pass");
-
+        String unameFromMA = intent.getStringExtra("uname");
         ipName.setText(nameFromMA);
         ipPassword.setText(passFromMA);
+
+        upButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        copyButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //String genedPass = secret.genpass(8);
+                String genedPass = ipPassword.getText().toString().trim();
+                String key = secret.genKey(unameFromMA);
+                String decPass = secret.decrypt(genedPass, key);
+                //ipPass.setText(genedPass);
+
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("decPass", decPass);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(showPass.this, "Password Copied to Clipboard!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        delButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        chgButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         /*
         *

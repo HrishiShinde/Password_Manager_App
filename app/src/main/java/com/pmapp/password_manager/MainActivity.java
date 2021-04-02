@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Log.i("testpassc", "onDataChange: pass= "+passCount+"------"+lol+"  "+receivedUname+"------"+passName+"=="+passPass);
                     adapter = new Adapter(getApplicationContext(), passName);
                     adapter.setPassPass(passPass);
+                    adapter.setUname(receivedUname);
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
                     recycler.setLayoutManager(gridLayoutManager);
                     recycler.setAdapter(adapter);
