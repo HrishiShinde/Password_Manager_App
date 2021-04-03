@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public String receivedName, receivedUname, passFromDb;
 
     Button logout;
+    ImageButton reloadButt;
     FirebaseAuth auth;
     TextView welmsg;
     FloatingActionButton addFab;
@@ -58,14 +60,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Intent intent = new Intent(this, Login.class);
+        //Intent intent1 = new Intent(this, MainActivity.class);
         //startActivity(intent);
+
+        //this.recreate();
 
         drawerLayout = findViewById(R.id.drawerLayout);
         navigationView = findViewById(R.id.navigation_view);
         welmsg = findViewById(R.id.welTv);
         logout = findViewById(R.id.Logout);
         addFab = findViewById(R.id.add_fab);
+        reloadButt = findViewById(R.id.reloadButt);
 
         recycler = findViewById(R.id.recyclerView);
         titles = new ArrayList<>();
@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         titles.add("OPest Hrishi");
 
         Intent intent = getIntent();
+
         receivedName = intent.getStringExtra("name");
         receivedUname = intent.getStringExtra("uname");
         Log.i("name", "name= " + receivedName);
@@ -130,6 +136,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        reloadButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                overridePendingTransition(0, 0);
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -226,18 +243,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return true;
     }
-    /*
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        FirebaseUser fbUser = auth.getCurrentUser();
-        if(fbUser != null){
-
-        }else{
-            startActivity(new Intent(getApplicationContext(), Login.class));
-            finish();
-        }
-
-    }*/
 }

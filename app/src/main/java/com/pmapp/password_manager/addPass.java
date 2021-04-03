@@ -55,7 +55,6 @@ public class addPass extends AppCompatActivity implements NavigationView.OnNavig
         genPass=findViewById(R.id.genPass);
         addPass=findViewById(R.id.addPassBtn);
         fDatabase = FirebaseDatabase.getInstance();
-        //dbRefUsers = fDatabase.getInstance().getReference();
         dbRefPass = fDatabase.getReference("passwords");
 
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.start, R.string.close);
@@ -104,13 +103,10 @@ public class addPass extends AppCompatActivity implements NavigationView.OnNavig
                     Log.i("testpass", "(addPass)onClick: before enc sitename= "+sitename+"---- sitepass= "+sitepass);
                     Log.i("testpass", "(addPass)onClick: before enc");
 
-                    String encPass = secret.encrypt(sitepass, finalReducedPass);
-
-                    //String pass = new String(passwords).replace("[",",");
-                    //pass = pass.replace("@",":");
+                    String encPass = secret.encrypt(sitepass, unameFromMA);
 
                     Log.i("testpass", "(addPass)onClick: encPass= "+encPass);
-                    Log.i("testpass", "(addPass)onClick: decPass= "+secret.decrypt(encPass, finalReducedPass));
+                    Log.i("testpass", "(addPass)onClick: decPass= "+secret.decrypt(encPass, unameFromMA));
 
                     PassHelper ph = new PassHelper(sitename, encPass);
                     dbRefPass.child(unameFromMA).child(sitename).setValue(ph);

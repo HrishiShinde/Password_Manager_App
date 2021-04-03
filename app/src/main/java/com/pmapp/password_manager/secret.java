@@ -27,6 +27,15 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class secret {
     public static String reducedPass;
+
+    public static String getReducedPass() {
+        return reducedPass;
+    }
+
+    public static void setReducedPass(String reducedPass) {
+        secret.reducedPass = reducedPass;
+    }
+
     public static String sha512Hasher(String password, String uname) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -63,6 +72,7 @@ public class secret {
     public static String genKey(String uname) {
         FirebaseDatabase fDatabase;
         DatabaseReference dbRef;
+        reducedPass = "";
         fDatabase = FirebaseDatabase.getInstance();
         dbRef = fDatabase.getReference("users");
 
@@ -73,19 +83,21 @@ public class secret {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     String passFromDb = snapshot.child(uname).child("password").getValue(String.class);
-                    //Log.i("testpass", "(Main)onClick:-------- pass= "+passFromDb);
+                    Log.i("testpass", "(Main)onClick:-------- pass= "+passFromDb);
                     for (int i = 0; i < 8; i++ ){
                         reducedPass += passFromDb.charAt(i);
+                        setReducedPass(reducedPass);
                         //return reducedPass;
                     }
+                    Log.i("testpass", "(Main)onClick:-------- pass= "+reducedPass);
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
-        return reducedPass;
+        Log.i("testpass", "(secret)decrypt: reducedPass= "+ getReducedPass());
+        return getReducedPass();
     }
 
     public static String genpass(int length) {

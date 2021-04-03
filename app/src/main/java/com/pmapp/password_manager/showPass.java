@@ -1,22 +1,45 @@
 package com.pmapp.password_manager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class showPass extends AppCompatActivity {
 
     TextInputEditText ipName, ipPassword;
     Button upButt, copyButt, delButt, chgButt;
+
+    FirebaseDatabase fDatabase;
+    DatabaseReference dbRefPass, dbRefPassl;
+
+    String oldName;
+
+    public String getOldName() {
+        return oldName;
+    }
+
+    public void setOldName(String oldName) {
+        this.oldName = oldName;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +51,8 @@ public class showPass extends AppCompatActivity {
         copyButt = findViewById(R.id.copyButt);
         chgButt = findViewById(R.id.chgButt);
         delButt = findViewById(R.id.delButt);
+        fDatabase = FirebaseDatabase.getInstance();
+        dbRefPass = fDatabase.getReference("passwords");
 
         Intent intent = getIntent();
         String nameFromMA = intent.getStringExtra("name");
@@ -36,10 +61,58 @@ public class showPass extends AppCompatActivity {
         ipName.setText(nameFromMA);
         ipPassword.setText(passFromMA);
 
+
         upButt.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
+                //Log.i("showPass", "onClick: "+upButt.getId());
 
+                if(upButt.getId() != 1){
+                    ipName.setEnabled(true);
+                    Log.i("showPass", "onClick: Prayaas going good! -- "+upButt.getId());
+                    String oldName = ipName.getText().toString().trim();
+                    setOldName(oldName);
+                    upButt.setId(1);
+                }
+                else if(upButt.getId() == 1){
+                    String name = ipName.getText().toString().trim();
+                    String pass = ipPassword.getText().toString().trim();
+
+                    if(name.isEmpty()){
+                        ipName.setError("Field cannot be empty!");
+                        ipName.requestFocus();
+                    }
+                    if(pass.isEmpty()){
+                        ipPassword.setError("Field cannot be empty!");
+                        ipPassword.requestFocus();
+                    }
+
+                    PassHelper ph = new PassHelper(name, pass);
+                    dbRefPass.child(unameFromMA).child(name).setValue(ph);
+
+                    dbRefPassl = fDatabase.getReference("passwords").child(unameFromMA).child(getOldName());
+                    Query passQuery = dbRefPassl.orderByChild("username");
+                    passQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot appleSnapshot: snapshot.getChildren()) {
+                                appleSnapshot.getRef().removeValue();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                    Toast.makeText(showPass.this, "Profile Updated!, Reload to see changes.", Toast.LENGTH_SHORT).show();
+                    Log.i("showPass", "onClick:  Prayaas successful! -- "+upButt.getId());
+                    ipName.setEnabled(false);
+                    upButt.setId(2131296708);
+                    finish();
+                }
             }
         });
         copyButt.setOnClickListener(new View.OnClickListener() {
@@ -48,7 +121,7 @@ public class showPass extends AppCompatActivity {
                 //String genedPass = secret.genpass(8);
                 String genedPass = ipPassword.getText().toString().trim();
                 String key = secret.genKey(unameFromMA);
-                String decPass = secret.decrypt(genedPass, key);
+                String decPass = secret.decrypt(genedPass, unameFromMA);
                 //ipPass.setText(genedPass);
 
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -60,39 +133,36 @@ public class showPass extends AppCompatActivity {
         delButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String name = ipName.getText().toString().trim();
+                dbRefPassl = fDatabase.getReference("passwords").child(unameFromMA).child(name);
+                Query passQuery = dbRefPassl.orderByChild("username");
+                passQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot appleSnapshot: snapshot.getChildren()) {
+                            appleSnapshot.getRef().removeValue();
+                            finish();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                });
             }
         });
         chgButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                String name = ipName.getText().toString().trim();
+                Intent intent = new Intent(getApplicationContext(), changePass.class);
+                intent.putExtra("uname",unameFromMA);
+                intent.putExtra("name",name);
+                intent.putExtra("type","site");
+                startActivity(intent);
+                finish();
             }
         });
-
-        /*
-        *
-            <Button
-                android:id="@+id/copyButt"
-                android:layout_width="70dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/copy"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardTitle" />
-
-            <Button
-                android:id="@+id/chgButt"
-                android:layout_width="90dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="4dp"
-                android:text="@string/change"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/copyButt" />
-        * */
 
     }
 }

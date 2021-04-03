@@ -25,6 +25,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 public class changePass extends AppCompatActivity {
 
@@ -41,7 +42,8 @@ public class changePass extends AppCompatActivity {
         setContentView(R.layout.activity_change_pass);
 
         Intent intent = getIntent();
-        String unameFromPA = intent.getStringExtra("name");
+        String unameFromPA = intent.getStringExtra("uname");
+        String nameFromPA = intent.getStringExtra("name");
         String type = intent.getStringExtra("type");
         ipPass1 = findViewById(R.id.passOld);
         ipPass2 = findViewById(R.id.passNew);
@@ -132,28 +134,32 @@ public class changePass extends AppCompatActivity {
                     });
                 }
                 else if(type.equals("site")) {
+                    Log.i("testpass", "(chgPass) in elif!");
                     if(pass1.equals(pass2)){
                         ipPass2.setError("New password cannot be same!");
                         ipPass2.requestFocus();
                     }
                     else{
-                        dbRef = fDatabase.getReference("passwords");
-                        Query checkUser = dbRef.orderByChild("username").equalTo(unameFromPA);
-                        checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                        Log.i("testpass", "(chgPass)in Else");
+                        dbRef = fDatabase.getReference("passwords").child(unameFromPA).child(nameFromPA);
+                        Query checkPass = dbRef.orderByChild("sitename");
+                        checkPass.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 if (snapshot.exists()) {
-                                    Log.i("Lol", "onDataChange: exists bypassed!");
-                                    String nameFromDB = snapshot.child(unameFromPA).child("name").getValue(String.class);
-                                    String emailFromDB = snapshot.child(unameFromPA).child("email").getValue(String.class);
-                                    //String emailFromDB = snapshot.child(unameFromPA).child("username").getValue(String.class);
-                                    String passFromDB = snapshot.child(unameFromPA).child("password").getValue(String.class);
-                                    //ipPassword.setText(snapshot.child("password").getValue(String.class));
-
-                                    UserHelper uh = new UserHelper(nameFromDB, unameFromPA, emailFromDB, pass2);
-                                    dbRef.child(unameFromPA).setValue(uh);
-                                    Toast.makeText(changePass.this, "Password Updated!", Toast.LENGTH_SHORT).show();
+                                    Log.i("testpass", "(chgPass)onDataChange: exists bypassed!");
+                                    String encPass = secret.encrypt(pass2, unameFromPA);
+                                    Object data = snapshot.getValue();
+                                    //data = snapshot.getValue();
+                                    Log.i("testpass", "(chgPass)onDataChange: encPass==> "+encPass + "data => " + data);
+                                    PassHelper ph = new PassHelper(nameFromPA, encPass);
+                                    dbRef.setValue(ph);
+                                    Log.i("testpass", "(chgPass)onDataChange: Chaloooooo saved! now redirecting...");
+                                    Toast.makeText(changePass.this, "Password Updated!, Reload to see changes.", Toast.LENGTH_SHORT).show();
                                     finish();
+                                }
+                                else{
+                                    Log.i("testpass", "(chgPass)onDataChange: Loss...");
                                 }
                             }
                             @Override

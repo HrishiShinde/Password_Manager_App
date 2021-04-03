@@ -106,15 +106,12 @@ public class profile extends AppCompatActivity implements NavigationView.OnNavig
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-        //ipUpdate.setId(0);
         ipUpdate.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-                //ipUsername.setText("hasherOP");
-                int idx = ipUpdate.getId();
                 if(ipUpdate.getId() != 1){
-                    ipUsername.setEnabled(true);
+                    //ipUsername.setEnabled(true);
                     ipName.setEnabled(true);
                     ipEmail.setEnabled(true);
                     Log.i("prayaas", "onClick: Prayaas going good! -- "+ipUpdate.getId());
@@ -125,10 +122,6 @@ public class profile extends AppCompatActivity implements NavigationView.OnNavig
                     String name = ipName.getText().toString().trim();
                     String email = ipEmail.getText().toString().trim();
 
-                    if(uname.isEmpty()){
-                        ipUsername.setError("Field cannot be empty!");
-                        ipUsername.requestFocus();
-                    }
                     if(name.isEmpty()){
                         ipName.setError("Field cannot be empty!");
                         ipName.requestFocus();
@@ -143,7 +136,7 @@ public class profile extends AppCompatActivity implements NavigationView.OnNavig
 
                     Toast.makeText(profile.this, "Profile Updated!", Toast.LENGTH_SHORT).show();
                     Log.i("prayaas", "onClick:  Prayaas successful! -- "+ipUpdate.getId()+uname+name+email+"    "+passFromDb);
-                    ipUsername.setEnabled(false);
+                    //ipUsername.setEnabled(false);
                     ipName.setEnabled(false);
                     ipEmail.setEnabled(false);
                     ipUpdate.setId(2131296704);
