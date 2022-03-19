@@ -85,6 +85,21 @@
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/forgotPass"
+        android:layout_width="188dp"
+        android:layout_height="22dp"
+        android:fontFamily="@font/poppinsmedium"
+        android:gravity="right"
+        android:text="@string/forgot_password"
+        android:textColor="@color/dpurp"
+        app:layout_constraintBottom_toTopOf="@+id/Login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.865"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Password"
+        app:layout_constraintVertical_bias="0.566" />
+
     <Button
         android:id="@+id/Login"
         style="@style/Widget.MaterialComponents.Button"
@@ -106,7 +121,6 @@
         android:layout_marginTop="36dp"
         android:fontFamily="@font/poppinsmedium"
         android:gravity="center"
-        android:onClick="gotosign"
         android:textColor="@color/dpurp"
         android:text="@string/signupNow"
         app:layout_constraintEnd_toEndOf="parent"

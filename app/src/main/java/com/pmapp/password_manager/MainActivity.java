@@ -8,6 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseDatabase fDatabase;
     DatabaseReference dbRef, dbRefPass;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -111,14 +114,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (snapshot.exists()) {
                     int passCount = (int) snapshot.child("").getChildrenCount();
                     String lol = snapshot.toString();
+                    Log.i("testpassc", "onDataChange: lol=> " + lol);
                     HashMap<String, HashMap<String, String>> val = (HashMap<String, HashMap<String, String>>) snapshot.getValue();
+                    Log.i("testpassc", "onDataChange: val=> " + val);
                     passName = new ArrayList<String>();
                     passPass = new ArrayList<String>();
-                    for (HashMap<String, String> i : val.values()) {
-                        HashMap<String, String> data = i;
-                        passName.add(data.get("name"));
-                        passPass.add(data.get("password"));
-                        Log.i("testpassc", "onDataChange: Data=> " + i + ",------->" + data.get("name"));
+                    assert val != null;
+                    Log.i("testpassc", "onDataChange: Data=> " + val.values());
+                    Object asd = val.values().toArray();
+                    Log.i("testpassc", "onDataChange: asd=> " + asd);
+                    for (HashMap<String, String> i :  val.values()) {
+                        passName.add(i.get("name"));
+                        passPass.add(i.get("password"));
+                        Log.i("testpassc", "onDataChange: Data=> " + i + ",------->" + i.get("name"));
                     }
                     Log.i("testpassc", "onDataChange: pass= "+passCount+"------"+lol+"  "+receivedUname+"------"+passName+"=="+passPass);
                     adapter = new Adapter(getApplicationContext(), passName);

@@ -35,7 +35,7 @@ public class Login extends AppCompatActivity {
 
     TextInputLayout ipUser, ipPass;
     Button login;
-    TextView suTV;
+    TextView suTV, fpTV;
     FirebaseAuth auth;
     ProgressBar ipProgress;
     FirebaseDatabase fDatabase;
@@ -53,6 +53,7 @@ public class Login extends AppCompatActivity {
         login = findViewById(R.id.Login);
         ipProgress = findViewById(R.id.progress);
         suTV = findViewById(R.id.signUpTV);
+        fpTV = findViewById(R.id.forgotPass);
         auth = FirebaseAuth.getInstance();
         fDatabase = FirebaseDatabase.getInstance();
         dbRef = fDatabase.getReference("users");
@@ -63,6 +64,13 @@ public class Login extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), SignUP.class));
             }
         });
+        fpTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), forgotPass.class));
+            }
+        });
+
         Log.i("info", "Before onCliclk!");
         login.setOnClickListener(new View.OnClickListener() {
             @Override

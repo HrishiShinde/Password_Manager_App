@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Password_Manager">
-        <activity android:name=".showPass"></activity>
+        <activity
+            android:name=".forgotPass"
+            android:exported="false" />
+        <activity android:name=".showPass" />
         <activity android:name=".changePass" />
         <activity android:name=".profile" />
         <activity android:name=".addPass" />

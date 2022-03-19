@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/drawerLayout"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/awesomeWhite"
-        tools:context=".addPass">
+        tools:context=".changePass">
 
         <TextView
             android:id="@+id/addPassTV"
@@ -22,7 +20,7 @@
             android:layout_marginTop="116dp"
             android:fontFamily="@font/poppinsbold"
             android:gravity="center"
-            android:text="@string/add_password"
+            android:text="@string/forgot_pass"
             android:textColor="@color/dpurp"
             android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,13 +29,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/Name"
+            android:id="@+id/Pass1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="236dp"
             android:layout_marginRight="30dp"
-            android:hint="@string/name"
+            android:hint="@string/Username"
             app:boxStrokeColor="@color/coolYellow"
             app:boxStrokeErrorColor="@color/dopeRed"
             android:textColorHint="@color/dpurp"
@@ -51,25 +49,24 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name"
+                android:id="@+id/passOld"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_user_2"
                 android:textColor="@color/dpurp"
-                android:maxLength="12"
                 android:fontFamily="@font/poppinsmedium">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/Password"
+            android:id="@+id/Pass2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="44dp"
             android:layout_marginRight="30dp"
-            android:hint="@string/Password"
+            android:hint="@string/new_password"
             app:boxStrokeColor="@color/coolYellow"
             app:boxStrokeErrorColor="@color/dopeRed"
             android:textColorHint="@color/dpurp"
@@ -77,20 +74,18 @@
             app:counterTextColor="@color/dopeRed"
             app:boxBackgroundMode="outline"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:endIconMode="password_toggle"
             app:boxCornerRadiusTopStart="20dp"
             app:boxCornerRadiusBottomEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Name">
+            app:layout_constraintTop_toBottomOf="@+id/Pass1">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
+                android:id="@+id/passNew"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppinsmedium"
                 android:textColor="@color/dpurp"
-                android:maxLength="12"
                 >
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -107,21 +102,21 @@
             android:text="@string/generate_password"
             android:textColor="@color/dpurp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Password" />
+            app:layout_constraintTop_toBottomOf="@+id/Pass2" />
 
         <Button
-            android:id="@+id/addPassBtn"
+            android:id="@+id/changBTN"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="68dp"
             android:backgroundTint="@color/coolYellow"
             android:fontFamily="@font/poppinsmedium"
-            android:text="@string/add"
+            android:text="@string/change"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Password"
+            app:layout_constraintTop_toBottomOf="@+id/Pass2"
             tools:targetApi="lollipop" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
