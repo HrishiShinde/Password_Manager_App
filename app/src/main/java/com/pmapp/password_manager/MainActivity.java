@@ -102,10 +102,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Intent intent = getIntent();
 
         receivedName = intent.getStringExtra("name");
-        receivedUname = intent.getStringExtra("uname");
-        Log.i("name", "name= " + receivedName);
+        receivedUname = intent.getStringExtra("uid");
+        Log.i("nameop", "receivedName: " + receivedName);
+        Log.i("nameop", "receivedUname: " + receivedUname);
         welmsg.setText("Hello, Welcome "+receivedName+"!");
 
+//        if(receivedUname != null){
         dbRefPass = fDatabase.getReference("passwords").child(receivedUname);
         Query passQuery = dbRefPass.orderByChild("username");
         passQuery.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-
+//        }
         reloadButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

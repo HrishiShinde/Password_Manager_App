@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppinsbold"
         android:gravity="center"
+        android:layout_marginTop="80dp"
         android:text="@string/signup"
         android:textColor="@color/dpurp"
         android:textSize="30sp"
@@ -30,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="216dp"
+        android:layout_marginTop="30dp"
         android:layout_marginRight="30dp"
         android:hint="@string/name"
         android:textColorHint="@color/dpurp"
@@ -42,7 +43,7 @@
         app:hintTextColor="@color/dpurp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/titleTV">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name"
@@ -178,28 +179,6 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/regBut" />
-
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/Username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTV">
-
-        <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progress"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:indicatorColor="@color/dopeRed"
-            tools:layout_editor_absoluteX="178dp"
-            tools:layout_editor_absoluteY="141dp"/>
-
-
-    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

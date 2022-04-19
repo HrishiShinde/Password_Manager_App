@@ -36,11 +36,11 @@ public class secret {
         secret.reducedPass = reducedPass;
     }
 
-    public static String sha512Hasher(String password, String uname) throws NoSuchAlgorithmException {
+    public static String sha512Hasher(String password, String email) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("SHA-512");
         md.reset();
-        byte[] salt = gensalt(uname);
+        byte[] salt = gensalt(email);
         System.out.println("In hasher salt: " + salt);
         md.update(salt);
         byte[] hashpass = md.digest(password.getBytes());

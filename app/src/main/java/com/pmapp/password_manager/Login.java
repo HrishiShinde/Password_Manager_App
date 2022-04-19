@@ -48,7 +48,10 @@ public class Login extends AppCompatActivity {
     FirebaseAuth auth;
     ProgressBar ipProgress;
     FirebaseDatabase fDatabase;
-    DatabaseReference dbRef;
+    DatabaseReference dbRef, dfRefLogUser;
+    String Uid;
+    String email;
+    String pass;
 
     //FingerPrint
     private static int REQUEST_CODE = 101010;
@@ -146,18 +149,18 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i("info", "onClick: before taking unams and pass ");
-                String uname = ipUser.getEditText().getText().toString().trim();
-                String pass = ipPass.getEditText().getText().toString().trim();
+                email = ipUser.getEditText().getText().toString().trim();
+                pass = ipPass.getEditText().getText().toString().trim();
 
                 try {
-                    String hashPass = secret.sha512Hasher(pass,uname);
+                    String hashPass = secret.sha512Hasher(pass,email);
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
 
-                Log.i("info", "onClick: uname, pass: "+uname+","+pass);
+                Log.d("info", "onClick: uname, pass: "+email+","+pass);
 
-                if (TextUtils.isEmpty(uname)){
+                if (TextUtils.isEmpty(email)){
                     ipUser.setError("Email is required!");
                     //Log.i("info", " in email check now!");
                     return;
@@ -169,48 +172,38 @@ public class Login extends AppCompatActivity {
                 }
 
                 //ipProgress.setVisibility(View.VISIBLE);
+                Log.i("nameop", "onDataChange: email= " + email);
 
-                Query checkUser = dbRef.orderByChild("username").equalTo(uname);
-                checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                auth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        if(snapshot.exists()){
-                            String passFromDb = snapshot.child(uname).child("password").getValue(String.class);
-
-                            try {
-                                String hashPass = secret.sha512Hasher(pass,uname);
-                                Log.i("pass", "onDataChange: "+passFromDb+"===="+hashPass);
-                                if(passFromDb.equals(hashPass)){
-                                    String name = "";
-                                    String nameFromDb = snapshot.child(uname).child("name").getValue(String.class);
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(Login.this, "Logged in Successful!", Toast.LENGTH_SHORT).show();
+                            String name = "";
+                            Uid = auth.getCurrentUser().getUid();
+                            String mail = auth.getCurrentUser().getEmail();
+                            Log.i("name", "onDataChange: mail= " + mail);
+                            dfRefLogUser = dbRef.child(Uid);
+                            dfRefLogUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    String nameFromDb = snapshot.child("name").getValue(String.class);
                                     Log.i("name", "onDataChange: name= " + nameFromDb);
                                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                                     intent.putExtra("name",nameFromDb);
-                                    intent.putExtra("uname",uname);
+                                    intent.putExtra("uid",Uid);
                                     startActivity(intent);
-                                    finish();
                                 }
-                                else{
-                                    ipPass.setError("Incorrect Password!");
-                                    ipPass.requestFocus();
-                                    //ipProgress.setVisibility(View.GONE);
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
                                 }
-                            } catch (NoSuchAlgorithmException e) {
-                                e.printStackTrace();
-                            }
+                            });
                         }
                         else{
-                            ipUser.setError("Username doesn't exists!");
-                            ipUser.requestFocus();
-                            //ipProgress.setVisibility(View.GONE);
-
+                            Toast.makeText(Login.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            ipProgress.setVisibility(View.GONE);
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
                     }
                 });
 

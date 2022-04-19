@@ -40,7 +40,7 @@ public class SignUP extends AppCompatActivity{
 
     TextInputEditText ipUsername, ipEmail, ipPassword, ipName;
     Button ipSignup;
-    ProgressBar ipProgress;
+//    ProgressBar ipProgress;
     FirebaseAuth auth;
     FirebaseFirestore fStore;
     FirebaseDatabase fDatabase;
@@ -57,7 +57,7 @@ public class SignUP extends AppCompatActivity{
         ipEmail = findViewById(R.id.email);
         ipPassword = findViewById(R.id.pass);
         ipSignup = findViewById(R.id.regBut);
-        ipProgress = findViewById(R.id.progress);
+//        ipProgress = findViewById(R.id.progress);
         auth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
         fDatabase = FirebaseDatabase.getInstance();
@@ -90,14 +90,11 @@ public class SignUP extends AppCompatActivity{
                     //Log.i("info", " in pass check now!");
                     return;
                 }
-
                 //Log.i("info", " before pbar now!, values of email,pass,cpass are : "+email+pass+cpass);
-                ipProgress.setVisibility(View.VISIBLE);
-
+//                ipProgress.setVisibility(View.VISIBLE);
                 //Log.i("info", " before pass check now!, values of pass,cpass are : "+pass+", "+cpass);
                 if (password.length() >= 8){
                     //Log.i("info", " in pass check now!, values of pass,cpass are : "+pass+", "+cpass);
-
                     Query checkUser = dbRef.orderByChild("username").equalTo(username);
                     checkUser.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -109,19 +106,36 @@ public class SignUP extends AppCompatActivity{
                                 if(unameFromDb.equals(username)){
                                     ipUsername.setError("Username Exists!");
                                     ipUsername.requestFocus();
-                                    ipProgress.setVisibility(View.GONE);
+//                                    ipProgress.setVisibility(View.GONE);
                                 }
                             }
                             else{
                                 try {
-                                    String hashPass = secret.sha512Hasher(password,username);
+                                    String hashPass = secret.sha512Hasher(password,email);
                                     Log.i("pass", "onDataChange: Hashedpass= "+hashPass);
-                                    UserHelper uh = new UserHelper(name,username,email,hashPass);
-                                    dbRef.child(username).setValue(uh);
-                                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                                    intent.putExtra("name",name);
-                                    startActivity(intent);
-                                    finish();
+                                    auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            //Log.i("info", " in onComplete now!");
+                                            if(task.isSuccessful()){
+                                                //Log.i("info", " in isSuccessful now!");
+                                                Toast.makeText(SignUP.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
+                                                Uid = auth.getCurrentUser().getUid();
+                                                UserHelper uh = new UserHelper(name,username,email,hashPass);
+                                                dbRef.child(Uid).setValue(uh);
+                                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                                intent.putExtra("name",name);
+                                                intent.putExtra("uname",username);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+                                            else{
+                                                Toast.makeText(SignUP.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                //Log.e("error", task.getException().getMessage());
+                                                //ipProgress.setVisibility(View.GONE);
+                                            }
+                                        }
+                                    });
                                 } catch (NoSuchAlgorithmException e) {
                                     e.printStackTrace();
                                 }
@@ -134,46 +148,11 @@ public class SignUP extends AppCompatActivity{
 
                         }
                     });
-
-                    /*auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            //Log.i("info", " in onComplete now!");
-                            if(task.isSuccessful()){
-                                //Log.i("info", " in isSuccessful now!");
-                                Toast.makeText(SignUP.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-                                Uid = auth.getCurrentUser().getUid();
-                                DocumentReference docRef = fStore.collection("users").document(Uid);
-                                Map<String, Object> userMap = new HashMap<>();
-                                userMap.put("Uname", username);
-                                userMap.put("Email", email);
-
-                                docRef.set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.i("TAG", "onSuccess: User doc created for" + Uid);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.i("TAG", "onFaliure: " + e.toString());
-                                    }
-                                });
-
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            }
-                            else{
-                                Toast.makeText(SignUP.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                //Log.e("error", task.getException().getMessage());
-                                ipProgress.setVisibility(View.GONE);
-                            }
-                        }
-                    });*/
                 }
                 else{
                     ipPassword.setError("Must be greater than or eqaual to 8 chars!");
                     //Log.i("info", " in else now!");
-                    ipProgress.setVisibility(View.GONE);
+//                    ipProgress.setVisibility(View.GONE);
                 }
             }
         });
@@ -184,3 +163,22 @@ public class SignUP extends AppCompatActivity{
         startActivity(intent);
     }
 }
+
+// 126 - 142
+/*Uid = auth.getCurrentUser().getUid();
+DocumentReference docRef = fStore.collection("users").document(Uid);
+Map<String, Object> userMap = new HashMap<>();
+userMap.put("Uname", username);
+userMap.put("Email", email);
+
+docRef.set(userMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+    @Override
+    public void onSuccess(Void aVoid) {
+        Log.i("TAG", "onSuccess: User doc created for" + Uid);
+    }
+}).addOnFailureListener(new OnFailureListener() {
+    @Override
+    public void onFailure(@NonNull Exception e) {
+        Log.i("TAG", "onFaliure: " + e.toString());
+    }
+});*/
